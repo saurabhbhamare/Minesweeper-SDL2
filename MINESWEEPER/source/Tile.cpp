@@ -1,22 +1,19 @@
-#include<iostream>
-
+//#include<iostream>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Tile.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Render.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Constants.h>
 
-
-Tile Tile:: m_TileMatrix[TILE_ROWS][TILE_COLS];
+Tile Tile::m_TileMatrix[TILE_ROWS][TILE_COLS];
 
 Tile::Tile()
 {
 	InitializeTileMatrix();
 	PlaceMinesInTileMatrix();
 	PlaceAdjacentMineNumbersInTileMatrix();
-	
 }
 void Tile::InitializeTileMatrix()
 {
-		for (int i = 0; i < TILE_ROWS; i++)
+	for (int i = 0; i < TILE_ROWS; i++)
 	{
 		for (int j = 0; j < TILE_ROWS; j++)
 		{
@@ -34,7 +31,7 @@ void Tile::PlaceMinesInTileMatrix()
 	srand(time(NULL));
 
 	int numOfMines = MAXMINES;
-		while (numOfMines > 0)
+	while (numOfMines > 0)
 	{
 		int i = rand() % TILE_ROWS;
 		int j = rand() % TILE_COLS;
@@ -45,21 +42,19 @@ void Tile::PlaceMinesInTileMatrix()
 		}
 	}
 }
-bool Tile::TileIndexValid(int i , int j)
+bool Tile::TileIndexValid(int i, int j)
 {
 	return  (i >= 0 && i < TILE_ROWS) && (j >= 0 && j < TILE_COLS);
 }
 
-void Tile:: InsertFlag(int i , int j, int&flags)
+void Tile::InsertFlag(int i, int j, int& flags)
 {
-
-	
-		if (m_TileMatrix[i][j].m_Revealed)
-		{
-			std::cout << " revealed" << std::endl;
-			std::cout << flags << std::endl;
-			return;
-		}
+	if (m_TileMatrix[i][j].m_Revealed)
+	{
+		std::cout << " revealed" << std::endl;
+		std::cout << flags << std::endl;
+		return;
+	}
 	if (!m_TileMatrix[i][j].m_Flagged && flags <= 0)
 	{
 		return;
@@ -74,7 +69,7 @@ void Tile:: InsertFlag(int i , int j, int&flags)
 		flags++;
 	}
 }
-int Tile::TileNearMineCount(int  i , int j )
+int Tile::TileNearMineCount(int  i, int j)
 {
 	int count = 0;
 	//Count Near By Mines
@@ -108,8 +103,7 @@ void Tile::PlaceAdjacentMineNumbersInTileMatrix()
 			{
 				m_TileMatrix[i][j].m_AdjacentMines = TileNearMineCount(i, j);
 			}
-		
 		}
 	}
 }
- 
+

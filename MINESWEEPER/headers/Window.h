@@ -2,23 +2,23 @@
 #include <SDL.h> 
 #include<excpt.h>
 
-class Window {
-private : 
+class Window
+{
+private:
 	SDL_Window* window;
 
-	int m_windowPositionX; 
-	int m_windowPositionY; 
+	int m_windowPositionX;
+	int m_windowPositionY;
 	int m_windowWidth;
-	int m_windowHeight; 
+	int m_windowHeight;
 	SDL_Event event;
 
-public : 
-	void InitializeSDL();  
+public:
+	void InitializeSDL();
 
-	  Window();
-    ~Window();
+	Window();
+	~Window();
 
-	 operator SDL_Window*();
+	operator SDL_Window* ();
 
-	
 };

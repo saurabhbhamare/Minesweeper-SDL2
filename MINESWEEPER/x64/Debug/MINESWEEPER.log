@@ -1,6 +1,2 @@
 ﻿  Render.cpp
-  Tile.cpp
-C:\Plus\MINESWEEPER\MINESWEEPER\source\Tile.cpp(34,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  main.cpp
-  Generating Code...
   MINESWEEPER.vcxproj -> C:\Plus\MINESWEEPER\x64\Debug\MINESWEEPER.exe
