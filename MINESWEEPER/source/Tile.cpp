@@ -52,10 +52,12 @@ bool Tile::TileIndexValid(int i , int j)
 
 void Tile:: InsertFlag(int i , int j, int&flags)
 {
+
 	
 		if (m_TileMatrix[i][j].m_Revealed)
 		{
-			std::cout << " Tile Revealed" << std::endl;
+			std::cout << " revealed" << std::endl;
+			std::cout << flags << std::endl;
 			return;
 		}
 	if (!m_TileMatrix[i][j].m_Flagged && flags <= 0)

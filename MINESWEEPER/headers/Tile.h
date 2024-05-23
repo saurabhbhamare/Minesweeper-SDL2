@@ -6,7 +6,7 @@ class Tile
 public:
 	int i;
 	int j;
-	int   m_AdjacentMines;
+	int  m_AdjacentMines;
 	bool m_Revealed ;
 	bool m_Mine;
 	bool m_Flagged;

@@ -12,6 +12,11 @@ Render::Render(SDL_Window* window)
 	ImportTextures();
 	//renderLoop = false;   //renderloop set to false 
 }
+Render::~Render()
+{
+	FreeTextures();
+	std::cout << "free textures" << std::endl;
+}
 void Render::RenderLoop(SDL_Window* window)
 {
  	//InputEvents();
@@ -181,4 +186,13 @@ void Render::ImportTextures()
 	p_TextureArray.push_back(IMG_LoadTexture(renderer, "C:/Plus/MINESWEEPER/Images/64x64/5_64x64.png"));                                 // num 5
 	p_TextureArray.push_back(IMG_LoadTexture(renderer, "C:/Plus/MINESWEEPER/Images/64x64/flag_1_64x64.png"));                      //flag
 }
+void Render::FreeTextures()
+{
+	for (int i = 0; i < p_TextureArray.size(); i++)
+	{
+		SDL_DestroyTexture(p_TextureArray[i]);
+	}
+	p_TextureArray.clear();
+}
+
 

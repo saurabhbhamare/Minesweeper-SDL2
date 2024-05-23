@@ -21,6 +21,7 @@ public:
 	
    
 	Render(SDL_Window*);
+	~Render();
 	void RenderTiles( Tile tile);
 	void RenderTileNumberTextures(Tile tile );
 	void ImportTextures();
@@ -29,6 +30,7 @@ public:
 	void TilesFloodFill(int i, int j);
 	void RevealTiles();
 	void RevealAdjacentTiles();
+	void FreeTextures();
 //	void InputEvents(bool renderLoop);
 
 };
