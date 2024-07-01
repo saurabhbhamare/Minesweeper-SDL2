@@ -3,11 +3,10 @@
 class Sound
 {
 private:
-	Mix_Chunk* m_TileRevealSound;
-	Mix_Chunk* m_ExplosionSound;
-	Mix_Chunk* m_InsertFlagSound; 
-	//Mix_Chunk* m_
-	//Mix_Chunk* tileReveal;
+	Mix_Chunk* p_TileRevealSound;
+	Mix_Chunk* p_ExplosionSound;
+	Mix_Chunk* p_InsertFlagSound; 
+
 public:
 	Sound();
 	~Sound();

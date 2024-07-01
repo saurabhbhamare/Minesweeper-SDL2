@@ -145,6 +145,7 @@
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Render.cpp" />
     <ClCompile Include="source\Sound.cpp" />
+    <ClCompile Include="source\Test.cpp" />
     <ClCompile Include="source\Tile.cpp" />
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>

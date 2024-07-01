@@ -3,15 +3,21 @@
 #include<SDL_image.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Render.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Constants.h>
+//#include <SDL_ttf.h> 
 
 Render::Render()
-	:flags(FLAGS), renderLoop(true), pwindow(window)
+	:flags(FLAGS), m_RenderLoop(true), p_Window(m_Window)
 {
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
-	renderer = SDL_CreateRenderer(pwindow, -1, SDL_RENDERER_ACCELERATED);
-	sound = new Sound();
+	p_Renderer = SDL_CreateRenderer(p_Window, -1, SDL_RENDERER_ACCELERATED);
+//	m_ScreenState = ScreenState::PLAYING;
+	p_Sound = new Sound();
 	ImportTextures();
-	RenderLoop(window);
+	
+	RenderLoop(m_Window);
+
+	// Adding Screenstate code
+	 
 }
 Render::~Render()
 {
@@ -22,11 +28,11 @@ void Render::RenderLoop(SDL_Window* window)
 {
 	//renderLoop = false;
 	//InputEvents();
-	while (renderLoop)
+	while (m_RenderLoop)
 	{
-		SDL_PollEvent(&event);    // window event
+		SDL_PollEvent(&m_Event);    // window event
 
-		SDL_RenderClear(renderer);
+		SDL_RenderClear(p_Renderer);
 		for (int i = 0; i < TILE_ROWS; ++i)
 		{
 			for (int j = 0; j < TILE_ROWS; ++j)
@@ -35,30 +41,30 @@ void Render::RenderLoop(SDL_Window* window)
 				RenderTileNumberTextures(Tile::m_TileMatrix[i][j]);
 			}
 		}
-		SDL_RenderPresent(renderer);
+		SDL_RenderPresent(p_Renderer);
 
-		if (event.type == SDL_QUIT)
+		if (m_Event.type == SDL_QUIT)
 		{
-			renderLoop = false;
+			m_RenderLoop = false;
 		}
-		if (event.type == SDL_MOUSEBUTTONDOWN)
+		if (m_Event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			if (event.type == SDL_MOUSEBUTTONDOWN)
+			if (m_Event.type == SDL_MOUSEBUTTONDOWN)
 			{
-				if (event.button.button == SDL_BUTTON_LEFT)
+				if (m_Event.button.button == SDL_BUTTON_LEFT)
 				{
 					int x, y;
 					SDL_GetMouseState(&x, &y);
 					int i = x / TILE_WIDTH;
 					int j = y / TILE_HEIGHT;
-					if (!Tile::m_TileMatrix[i][j].m_Revealed)	sound->PlayTileRevealSound();
+					if (!Tile::m_TileMatrix[i][j].m_Revealed)	p_Sound->PlayTileRevealSound();
 					// if (!Tile::m_TileMatrix[i][j].m_Mine) sound->PlayExplosionSound();
 					if (Tile::TileIndexValid(i, j) && !Tile::m_TileMatrix[i][j].m_Flagged)
 					{
 						TilesFloodFill(i, j);
 					}
 				}
-				else if (event.button.button == SDL_BUTTON_RIGHT)
+				else if (m_Event.button.button == SDL_BUTTON_RIGHT)
 				{
 					int x, y;
 					SDL_GetMouseState(&x, &y);
@@ -68,7 +74,7 @@ void Render::RenderLoop(SDL_Window* window)
 					if (Tile::TileIndexValid(i, j))
 					{
 						Tile::InsertFlag(i, j, flags);
-						sound->PlayInsertFlagSound();
+						p_Sound->PlayInsertFlagSound();
 					}
 				}
 			}
@@ -83,7 +89,7 @@ void Render::RenderTiles(Tile tile)
 
 	if (!tile.m_Revealed && tile.m_Flagged)
 	{
-		SDL_RenderCopy(renderer, p_TextureArray[TextureName::TEXTURE_FLAG], NULL, &destRect);
+		SDL_RenderCopy(p_Renderer, p_TextureArray[TextureName::TEXTURE_FLAG], NULL, &destRect);
 		return;
 	}
 	else if (tile.m_Revealed)
@@ -97,7 +103,7 @@ void Render::RenderTiles(Tile tile)
 			texture = p_TextureArray[TextureName::TEXTURE_EMPTY];
 		}
 	}
-	SDL_RenderCopy(renderer, texture, NULL, &destRect);
+	SDL_RenderCopy(p_Renderer, texture, NULL, &destRect);
 }
 
 void Render::RevealTiles()
@@ -109,7 +115,7 @@ void Render::RevealTiles()
 }
 void Render::RenderTileNumberTextures(Tile tile)
 {
-	if (renderer == nullptr)
+	if (p_Renderer == nullptr)
 	{
 		std::cout << "null renderer" << std::endl;
 	}
@@ -139,7 +145,7 @@ void Render::RenderTileNumberTextures(Tile tile)
 			numberTexture = p_TextureArray[TextureName::TEXTURE_NUM5];
 		}
 	}
-	SDL_RenderCopy(renderer, numberTexture, NULL, &destRect);
+	SDL_RenderCopy(p_Renderer, numberTexture, NULL, &destRect);
 
 }
 void Render::TilesFloodFill(int i, int j)
@@ -175,15 +181,15 @@ void Render::TilesFloodFill(int i, int j)
 
 void Render::ImportTextures()
 {
-	p_TextureArray.push_back(IMG_LoadTexture(renderer, "C:/Plus/MINESWEEPER/Images/64x64/unknown_2_64x64.png"));                         // unknown
-	p_TextureArray.push_back(IMG_LoadTexture(renderer, "C:/Plus/MINESWEEPER/Images/64x64/empty_64x64.png"));                                 // empty
-	p_TextureArray.push_back(IMG_LoadTexture(renderer, "C:/Plus/MINESWEEPER/Images/64x64/bomb_exploded_64x64.png"));                 // exploded
-	p_TextureArray.push_back(IMG_LoadTexture(renderer, "C:/Plus/MINESWEEPER/Images/64x64/1_64x64.png"));                                         // num 1
-	p_TextureArray.push_back(IMG_LoadTexture(renderer, "C:/Plus/MINESWEEPER/Images/64x64/2_64x64.png"));                                         // num 2
-	p_TextureArray.push_back(IMG_LoadTexture(renderer, "C:/Plus/MINESWEEPER/Images/64x64/3_64x64.png"));                                         // num 3
-	p_TextureArray.push_back(IMG_LoadTexture(renderer, "C:/Plus/MINESWEEPER/Images/64x64/4_64x64.png"));                                         // num 4
-	p_TextureArray.push_back(IMG_LoadTexture(renderer, "C:/Plus/MINESWEEPER/Images/64x64/5_64x64.png"));                                         // num 5
-	p_TextureArray.push_back(IMG_LoadTexture(renderer, "C:/Plus/MINESWEEPER/Images/64x64/flag_1_64x64.png"));                                 // flag
+	p_TextureArray.push_back(IMG_LoadTexture(p_Renderer, "C:/Plus/MINESWEEPER/Images/64x64/unknown_2_64x64.png"));                         // unknown
+	p_TextureArray.push_back(IMG_LoadTexture(p_Renderer, "C:/Plus/MINESWEEPER/Images/64x64/empty_64x64.png"));                                 // empty
+	p_TextureArray.push_back(IMG_LoadTexture(p_Renderer, "C:/Plus/MINESWEEPER/Images/64x64/bomb_exploded_64x64.png"));                 // exploded
+	p_TextureArray.push_back(IMG_LoadTexture(p_Renderer, "C:/Plus/MINESWEEPER/Images/64x64/1_64x64.png"));                                         // num 1
+	p_TextureArray.push_back(IMG_LoadTexture(p_Renderer, "C:/Plus/MINESWEEPER/Images/64x64/2_64x64.png"));                                         // num 2
+	p_TextureArray.push_back(IMG_LoadTexture(p_Renderer, "C:/Plus/MINESWEEPER/Images/64x64/3_64x64.png"));                                         // num 3
+	p_TextureArray.push_back(IMG_LoadTexture(p_Renderer, "C:/Plus/MINESWEEPER/Images/64x64/4_64x64.png"));                                         // num 4
+	p_TextureArray.push_back(IMG_LoadTexture(p_Renderer, "C:/Plus/MINESWEEPER/Images/64x64/5_64x64.png"));                                         // num 5
+	p_TextureArray.push_back(IMG_LoadTexture(p_Renderer, "C:/Plus/MINESWEEPER/Images/64x64/flag_1_64x64.png"));                                 // flag
 }
 void Render::FreeTextures()
 {
@@ -192,6 +198,15 @@ void Render::FreeTextures()
 		SDL_DestroyTexture(p_TextureArray[i]);
 	}
 	p_TextureArray.clear();
+}
+void Render::RenderGameOverScreen()
+{
+
+}
+void Render::RenderGameStates()
+{
+	m_ScreenState = ScreenState::MAIN;
+	
 }
 
 

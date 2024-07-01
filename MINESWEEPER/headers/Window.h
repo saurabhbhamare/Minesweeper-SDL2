@@ -7,11 +7,11 @@ class Window
 private:
 	SDL_Window* window;
 
-	int m_windowPositionX;
-	int m_windowPositionY;
-	int m_windowWidth;
-	int m_windowHeight;
-	SDL_Event event;
+	int m_WindowPositionX;
+	int m_WindowPositionY;
+	int m_WindowWidth;
+	int m_WindowHeight;
+	SDL_Event m_Event;
 
 public:
 	void InitializeSDL();

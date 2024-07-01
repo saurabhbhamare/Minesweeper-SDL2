@@ -4,12 +4,12 @@
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/WIndow.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Constants.h>
 
-Window::Window() :m_windowPositionX(SDL_WINDOWPOS_CENTERED), m_windowPositionY(SDL_WINDOWPOS_CENTERED), m_windowWidth(SCREEN_WIDTH), m_windowHeight(SCREEN_HEIGHT)
+Window::Window() :m_WindowPositionX(SDL_WINDOWPOS_CENTERED), m_WindowPositionY(SDL_WINDOWPOS_CENTERED), m_WindowWidth(SCREEN_WIDTH), m_WindowHeight(SCREEN_HEIGHT)
 {
 	// Initializing SDL                               
 	InitializeSDL();       
 	//window creation 
-	window = SDL_CreateWindow("MINESWEEPER", m_windowPositionX, m_windowPositionY, m_windowWidth, m_windowHeight, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("MINESWEEPER", m_WindowPositionX, m_WindowPositionY, m_WindowWidth, m_WindowHeight, SDL_WINDOW_SHOWN);
 
 	if (window == nullptr)
 	{

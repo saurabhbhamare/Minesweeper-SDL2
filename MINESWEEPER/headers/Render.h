@@ -12,16 +12,16 @@ class Tile;
 class Render
 {
 private: 
-	Window window;
-	int flags;
-	bool renderLoop;
+	Window m_Window;
+	bool m_RenderLoop;
 	std::vector<SDL_Texture*> p_TextureArray;
-	SDL_Renderer* renderer;
-	SDL_Rect destRect;
-	SDL_Event event;
-	SDL_Window* pwindow;
-	Sound* sound;
-	ScreenState screenState;
+	SDL_Renderer* p_Renderer;
+	SDL_Rect m_DestRect;
+	SDL_Event m_Event;
+	SDL_Window* p_Window;
+	Sound* p_Sound;
+	ScreenState m_ScreenState;
+	int flags;
 
 public: 
 	Render();
@@ -35,6 +35,7 @@ private:
 	void TakeInputCoordinates();
 	void TilesFloodFill(int i, int j);
 	void RevealTiles();
-	//void RevealAdjacentTiles();
+	void RenderGameOverScreen();
 	void FreeTextures();
+	void RenderGameStates();
 };
