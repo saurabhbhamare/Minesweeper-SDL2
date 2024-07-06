@@ -4,7 +4,7 @@
 int main(int argc, char* argv[])
 {
 	//std::unique_ptr<Render>render = std::make_unique<Render>();
-	 Render render;
+	Render render;
 	 return 0;
 }
 

@@ -30,7 +30,7 @@
     <ClCompile Include="source\Sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Test.cpp">
+    <ClCompile Include="source\Text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\Sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

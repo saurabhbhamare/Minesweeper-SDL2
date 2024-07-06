@@ -1,6 +1,7 @@
 #pragma once
 //#include</Plus/MINESWEEPER/MINESWEEPER/headers/Render.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Constants.h>
+#include</Plus/MINESWEEPER/MINESWEEPER/headers/Sound.h>
 class Tile
 {
 public:
@@ -16,7 +17,8 @@ public:
 	static bool TileIndexValid(int, int);
 	static void InsertFlag(int i, int j, int& flags);
 	static int TileNearMineCount(int i, int j);
-
+private:
+	Sound* p_Sound;
 public:
 	Tile();
 

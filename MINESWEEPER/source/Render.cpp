@@ -3,15 +3,17 @@
 #include<SDL_image.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Render.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Constants.h>
-//#include <SDL_ttf.h> 
+#include<SDL_ttf.h>
 
 Render::Render()
 	:flags(FLAGS), m_RenderLoop(true), p_Window(m_Window)
 {
+	text.Initializettf();
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+	m_CurrentState = ScreenState::PLAYING;
 	p_Renderer = SDL_CreateRenderer(p_Window, -1, SDL_RENDERER_ACCELERATED);
 //	m_ScreenState = ScreenState::PLAYING;
-	p_Sound = new Sound();
+	//p_Sound = new Sound();
 	ImportTextures();
 	
 	RenderLoop(m_Window);
@@ -26,65 +28,86 @@ Render::~Render()
 }
 void Render::RenderLoop(SDL_Window* window)
 {
-	//renderLoop = false;
-	//InputEvents();
+	
+	//while (m_RenderLoop )
+	//{
+	//	SDL_PollEvent(&m_Event);    // window event
+
+	//	SDL_RenderClear(p_Renderer);
+	//	for (int i = 0; i < TILE_ROWS; ++i)
+	//	{
+	//		for (int j = 0; j < TILE_ROWS; ++j)
+	//		{
+	//			RenderTiles(Tile::m_TileMatrix[i][j]);
+	//			RenderTileNumberTextures(Tile::m_TileMatrix[i][j]);
+	//		}
+	//	}
+	//	SDL_RenderPresent(p_Renderer);
+
+	//	if (m_Event.type == SDL_QUIT)
+	//	{
+	//		m_RenderLoop = false;
+	//	}
+	//	if (m_Event.type == SDL_MOUSEBUTTONDOWN)
+	//	{
+	//		if (m_Event.type == SDL_MOUSEBUTTONDOWN)
+	//		{
+	//			if (m_Event.button.button == SDL_BUTTON_LEFT)
+	//			{
+	//				int x, y;
+	//				SDL_GetMouseState(&x, &y);
+	//				int i = x / TILE_WIDTH;
+	//				int j = y / TILE_HEIGHT;
+	//				if (!Tile::m_TileMatrix[i][j].m_Revealed)	p_Sound->PlayTileRevealSound();
+	//				// if (!Tile::m_TileMatrix[i][j].m_Mine) sound->PlayExplosionSound();
+	//				if (Tile::TileIndexValid(i, j) && !Tile::m_TileMatrix[i][j].m_Flagged)
+	//				{
+	//					TilesFloodFill(i, j);
+	//				}
+	//			}
+	//			else if (m_Event.button.button == SDL_BUTTON_RIGHT)
+	//			{
+	//				int x, y;
+	//				SDL_GetMouseState(&x, &y);
+	//				int i = x / TILE_WIDTH;
+	//				int j = y / TILE_HEIGHT;
+
+	//				if (Tile::TileIndexValid(i, j))
+	//				{
+	//					Tile::InsertFlag(i, j, flags);
+	//					p_Sound->PlayInsertFlagSound();
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+
 	while (m_RenderLoop)
 	{
-		SDL_PollEvent(&m_Event);    // window event
+	//	m_CurrentState = PLAYING;
 
-		SDL_RenderClear(p_Renderer);
-		for (int i = 0; i < TILE_ROWS; ++i)
+		switch (m_CurrentState)
 		{
-			for (int j = 0; j < TILE_ROWS; ++j)
-			{
-				RenderTiles(Tile::m_TileMatrix[i][j]);
-				RenderTileNumberTextures(Tile::m_TileMatrix[i][j]);
-			}
-		}
-		SDL_RenderPresent(p_Renderer);
-
-		if (m_Event.type == SDL_QUIT)
-		{
-			m_RenderLoop = false;
-		}
-		if (m_Event.type == SDL_MOUSEBUTTONDOWN)
-		{
-			if (m_Event.type == SDL_MOUSEBUTTONDOWN)
-			{
-				if (m_Event.button.button == SDL_BUTTON_LEFT)
-				{
-					int x, y;
-					SDL_GetMouseState(&x, &y);
-					int i = x / TILE_WIDTH;
-					int j = y / TILE_HEIGHT;
-					if (!Tile::m_TileMatrix[i][j].m_Revealed)	p_Sound->PlayTileRevealSound();
-					// if (!Tile::m_TileMatrix[i][j].m_Mine) sound->PlayExplosionSound();
-					if (Tile::TileIndexValid(i, j) && !Tile::m_TileMatrix[i][j].m_Flagged)
-					{
-						TilesFloodFill(i, j);
-					}
-				}
-				else if (m_Event.button.button == SDL_BUTTON_RIGHT)
-				{
-					int x, y;
-					SDL_GetMouseState(&x, &y);
-					int i = x / TILE_WIDTH;
-					int j = y / TILE_HEIGHT;
-
-					if (Tile::TileIndexValid(i, j))
-					{
-						Tile::InsertFlag(i, j, flags);
-						p_Sound->PlayInsertFlagSound();
-					}
-				}
-			}
+		case PLAYING:
+			RenderGamePlayingState();
+			break;
+		case PAUSE:
+			break;
+		case WIN:
+			RenderGameWinningState();
+			break;
+		case LOSE:
+			RenderGameOverScreenState();
+			break;
+		default:
+			break;
 		}
 	}
 }
 
 void Render::RenderTiles(Tile tile)
 {
-	SDL_Rect destRect = { tile.i * TILE_WIDTH, tile.j * TILE_HEIGHT, 40, 40 };
+	SDL_Rect destRect = { tile.i * TILE_WIDTH, tile.j * TILE_HEIGHT, TILE_HEIGHT, TILE_WIDTH };
 	SDL_Texture* texture = p_TextureArray[TextureName::TEXTURE_UNKNOWN];
 
 	if (!tile.m_Revealed && tile.m_Flagged)
@@ -96,6 +119,7 @@ void Render::RenderTiles(Tile tile)
 	{
 		if (tile.m_Mine)
 		{
+			m_CurrentState = ScreenState::LOSE;
 			texture = p_TextureArray[TextureName::TEXTURE_MINE];
 		}
 		else
@@ -199,14 +223,80 @@ void Render::FreeTextures()
 	}
 	p_TextureArray.clear();
 }
-void Render::RenderGameOverScreen()
+void Render::RenderGameWinningState()
 {
 
 }
-void Render::RenderGameStates()
+void Render::RenderGameOverScreenState()
 {
-	m_ScreenState = ScreenState::MAIN;
-	
+	SDL_SetRenderDrawColor(p_Renderer, 40, 40, 40, 100);
+    SDL_RenderClear(p_Renderer);
+	text.ShowGameOverScreenText(p_Renderer);
+
+    // Present the window
+    SDL_RenderPresent(p_Renderer);
 }
+
+//void Render::RenderGameStates()
+//{
+//	m_ScreenState = ScreenState::MAIN;
+//}
+void Render::RenderGamePlayingState()
+{
+	while (m_CurrentState == ScreenState::PLAYING )    // previour condition was m_RenderLoop
+	{
+		SDL_PollEvent(&m_Event);    // window event
+
+		SDL_RenderClear(p_Renderer);
+		for (int i = 0; i < TILE_ROWS; ++i)
+		{
+			for (int j = 0; j < TILE_ROWS; ++j)
+			{
+				RenderTiles(Tile::m_TileMatrix[i][j]);
+				RenderTileNumberTextures(Tile::m_TileMatrix[i][j]);
+			}
+		}
+		SDL_RenderPresent(p_Renderer);
+
+		if (m_Event.type == SDL_QUIT)
+		{
+			m_RenderLoop = false;
+		}
+		if (m_Event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			if (m_Event.type == SDL_MOUSEBUTTONDOWN)
+			{
+				if (m_Event.button.button == SDL_BUTTON_LEFT)
+				{
+					int x, y;
+					SDL_GetMouseState(&x, &y);
+					int i = x / TILE_WIDTH;
+					int j = y / TILE_HEIGHT;
+				//	if (!Tile::m_TileMatrix[i][j].m_Revealed)	p_Sound->PlayTileRevealSound();
+					// if (!Tile::m_TileMatrix[i][j].m_Mine) sound->PlayExplosionSound();
+					if (Tile::TileIndexValid(i, j) && !Tile::m_TileMatrix[i][j].m_Flagged)
+					{
+						TilesFloodFill(i, j);
+					}
+				}
+				else if (m_Event.button.button == SDL_BUTTON_RIGHT)
+				{
+					int x, y;
+					SDL_GetMouseState(&x, &y);
+					int i = x / TILE_WIDTH;
+					int j = y / TILE_HEIGHT;
+
+					if (Tile::TileIndexValid(i, j))
+					{   
+						
+						Tile::InsertFlag(i, j, flags);
+					//	p_Sound->PlayInsertFlagSound();
+					}
+				}
+			}
+		}
+	}
+}
+
 
 

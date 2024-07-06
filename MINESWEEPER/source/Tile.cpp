@@ -1,7 +1,7 @@
-//#include<iostream>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Tile.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Render.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Constants.h>
+#include</Plus/MINESWEEPER/MINESWEEPER/headers/Sound.h>
 
 Tile Tile::m_TileMatrix[TILE_ROWS][TILE_COLS];
 
@@ -63,10 +63,12 @@ void Tile::InsertFlag(int i, int j, int& flags)
 	if (m_TileMatrix[i][j].m_Flagged)
 	{
 		flags--;
+		Sound::GetInstance().PlayInsertFlagSound();
 	}
 	else
 	{
 		flags++;
+		Sound::GetInstance().PlayInsertFlagSound();
 	}
 }
 int Tile::TileNearMineCount(int  i, int j)

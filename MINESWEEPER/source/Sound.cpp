@@ -2,6 +2,7 @@
 #include<SDL_mixer.h>
 #include<iostream>
 
+Sound Sound:: s_Instance;
 
 Sound::Sound()
 {
@@ -48,3 +49,4 @@ Sound::~Sound()
 	std::cout << "destructor called" << std::endl;
 	Mix_Quit();
 }
+
