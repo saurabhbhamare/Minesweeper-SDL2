@@ -3,7 +3,9 @@
 Text::Text()
 {
 	Initializettf ();
-	p_Font = TTF_OpenFont("C:/Plus/MINESWEEPER/Fonts/Peepo/Peepo.ttf", 40);
+	p_SmallFont = TTF_OpenFont("C:/Plus/MINESWEEPER/Fonts/Peepo/Peepo.ttf", 20);
+	p_MediumFont = TTF_OpenFont("C:/Plus/MINESWEEPER/Fonts/Peepo/Peepo.ttf", 40);
+	p_LargeFont = TTF_OpenFont("C:/Plus/MINESWEEPER/Fonts/Peepo/Peepo.ttf", 60);
 }
 void Text::Initializettf()
 {
@@ -11,12 +13,11 @@ void Text::Initializettf()
 	{
 		std::cout<<"TTF is not initialized"<<std::endl;	
 	}
-
 }
 void Text::ShowGameOverScreenText(SDL_Renderer* renderer)
 {
 	SDL_Color textColor  = { 255, 255, 255 };
-	SDL_Surface* textSurface = TTF_RenderText_Solid(p_Font, "Game Over", textColor);
+	SDL_Surface* textSurface = TTF_RenderText_Solid(p_MediumFont, " You Lose  ", textColor);
 	if (!textSurface)
 	{
 		std::cout << "text surface is empty" << std::endl;
@@ -29,7 +30,32 @@ void Text::ShowGameOverScreenText(SDL_Renderer* renderer)
 	}
 	SDL_Rect destinationRect = { 150, 200, textSurface->w, textSurface->h }; // Set the position and size
 	SDL_RenderCopy(renderer, textTexture, nullptr, &destinationRect);
-
 	SDL_FreeSurface(textSurface);
 	SDL_DestroyTexture(textTexture);
+}
+void Text::ShowMainScreenText(SDL_Renderer* renderer)
+{
+	SDL_Color textColor = { 255, 255, 255 };
+	SDL_Surface* textSurfaceGameName = TTF_RenderText_Solid(p_LargeFont, "MINESWEEPER", textColor);
+	SDL_Surface* textSurfaceInfo = TTF_RenderText_Solid(p_SmallFont, "Press [S] to Start the Game", textColor);
+	if (!textSurfaceGameName)
+	{
+		std::cout << "text surface is empty" << std::endl;
+		return;
+	}
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurfaceGameName);
+	SDL_Texture* textTextureInfo = SDL_CreateTextureFromSurface(renderer, textSurfaceInfo);
+	if (!textTexture)
+	{
+		std::cout << "text texture is empty" << std::endl;
+	}
+	SDL_Rect destinationRectForGameName = { 65, 100, textSurfaceGameName->w, textSurfaceGameName->h }; // Set the position and size
+	SDL_Rect destinationRectForInfo = { 110, 240, textSurfaceInfo->w, textSurfaceInfo->h }; // Set the position and size
+	SDL_RenderCopy(renderer, textTexture, nullptr, &destinationRectForGameName);
+	SDL_RenderCopy(renderer, textTextureInfo, nullptr, &destinationRectForInfo);
+
+	SDL_FreeSurface(textSurfaceGameName);
+	SDL_FreeSurface(textSurfaceInfo);
+	SDL_DestroyTexture(textTexture);
+	SDL_DestroyTexture(textTextureInfo);
 }

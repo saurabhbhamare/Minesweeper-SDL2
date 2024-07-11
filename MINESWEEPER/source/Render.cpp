@@ -10,7 +10,7 @@ Render::Render()
 {
 	text.Initializettf();
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
-	m_CurrentState = ScreenState::PLAYING;
+	m_CurrentState = ScreenState :: MAIN;
 	p_Renderer = SDL_CreateRenderer(p_Window, -1, SDL_RENDERER_ACCELERATED);
 //	m_ScreenState = ScreenState::PLAYING;
 	//p_Sound = new Sound();
@@ -29,65 +29,15 @@ Render::~Render()
 void Render::RenderLoop(SDL_Window* window)
 {
 	
-	//while (m_RenderLoop )
-	//{
-	//	SDL_PollEvent(&m_Event);    // window event
-
-	//	SDL_RenderClear(p_Renderer);
-	//	for (int i = 0; i < TILE_ROWS; ++i)
-	//	{
-	//		for (int j = 0; j < TILE_ROWS; ++j)
-	//		{
-	//			RenderTiles(Tile::m_TileMatrix[i][j]);
-	//			RenderTileNumberTextures(Tile::m_TileMatrix[i][j]);
-	//		}
-	//	}
-	//	SDL_RenderPresent(p_Renderer);
-
-	//	if (m_Event.type == SDL_QUIT)
-	//	{
-	//		m_RenderLoop = false;
-	//	}
-	//	if (m_Event.type == SDL_MOUSEBUTTONDOWN)
-	//	{
-	//		if (m_Event.type == SDL_MOUSEBUTTONDOWN)
-	//		{
-	//			if (m_Event.button.button == SDL_BUTTON_LEFT)
-	//			{
-	//				int x, y;
-	//				SDL_GetMouseState(&x, &y);
-	//				int i = x / TILE_WIDTH;
-	//				int j = y / TILE_HEIGHT;
-	//				if (!Tile::m_TileMatrix[i][j].m_Revealed)	p_Sound->PlayTileRevealSound();
-	//				// if (!Tile::m_TileMatrix[i][j].m_Mine) sound->PlayExplosionSound();
-	//				if (Tile::TileIndexValid(i, j) && !Tile::m_TileMatrix[i][j].m_Flagged)
-	//				{
-	//					TilesFloodFill(i, j);
-	//				}
-	//			}
-	//			else if (m_Event.button.button == SDL_BUTTON_RIGHT)
-	//			{
-	//				int x, y;
-	//				SDL_GetMouseState(&x, &y);
-	//				int i = x / TILE_WIDTH;
-	//				int j = y / TILE_HEIGHT;
-
-	//				if (Tile::TileIndexValid(i, j))
-	//				{
-	//					Tile::InsertFlag(i, j, flags);
-	//					p_Sound->PlayInsertFlagSound();
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-
 	while (m_RenderLoop)
 	{
 	//	m_CurrentState = PLAYING;
 
 		switch (m_CurrentState)
 		{
+		case MAIN: 
+			RenderGameMainScreenState();
+
 		case PLAYING:
 			RenderGamePlayingState();
 			break;
@@ -297,6 +247,79 @@ void Render::RenderGamePlayingState()
 		}
 	}
 }
+void Render::RenderGameMainScreenState()
+{  
+	SDL_PollEvent(&m_Event);
+	if (m_Event.type == SDL_QUIT)
+	{
+		m_RenderLoop = false; 
+	}
+	if (m_Event.type == SDL_KEYDOWN)
+	{
+		if (m_Event.key.keysym.sym == SDLK_s)
+		{
+			m_CurrentState = ScreenState::PLAYING; 
+		}
+
+	}
+	SDL_SetRenderDrawColor(p_Renderer, 40, 40, 40, 100);
+	SDL_RenderClear(p_Renderer);
+	text.ShowMainScreenText(p_Renderer);
+	SDL_RenderPresent(p_Renderer);
+}
+
+//written in renderloop instead of while loop and switch statement 
 
 
+//while (m_RenderLoop )
+	//{
+	//	SDL_PollEvent(&m_Event);    // window event
 
+	//	SDL_RenderClear(p_Renderer);
+	//	for (int i = 0; i < TILE_ROWS; ++i)
+	//	{
+	//		for (int j = 0; j < TILE_ROWS; ++j)
+	//		{
+	//			RenderTiles(Tile::m_TileMatrix[i][j]);
+	//			RenderTileNumberTextures(Tile::m_TileMatrix[i][j]);
+	//		}
+	//	}
+	//	SDL_RenderPresent(p_Renderer);
+
+	//	if (m_Event.type == SDL_QUIT)
+	//	{
+	//		m_RenderLoop = false;
+	//	}
+	//	if (m_Event.type == SDL_MOUSEBUTTONDOWN)
+	//	{
+	//		if (m_Event.type == SDL_MOUSEBUTTONDOWN)
+	//		{
+	//			if (m_Event.button.button == SDL_BUTTON_LEFT)
+	//			{
+	//				int x, y;
+	//				SDL_GetMouseState(&x, &y);
+	//				int i = x / TILE_WIDTH;
+	//				int j = y / TILE_HEIGHT;
+	//				if (!Tile::m_TileMatrix[i][j].m_Revealed)	p_Sound->PlayTileRevealSound();
+	//				// if (!Tile::m_TileMatrix[i][j].m_Mine) sound->PlayExplosionSound();
+	//				if (Tile::TileIndexValid(i, j) && !Tile::m_TileMatrix[i][j].m_Flagged)
+	//				{
+	//					TilesFloodFill(i, j);
+	//				}
+	//			}
+	//			else if (m_Event.button.button == SDL_BUTTON_RIGHT)
+	//			{
+	//				int x, y;
+	//				SDL_GetMouseState(&x, &y);
+	//				int i = x / TILE_WIDTH;
+	//				int j = y / TILE_HEIGHT;
+
+	//				if (Tile::TileIndexValid(i, j))
+	//				{
+	//					Tile::InsertFlag(i, j, flags);
+	//					p_Sound->PlayInsertFlagSound();
+	//				}
+	//			}
+	//		}
+	//	}
+	//}

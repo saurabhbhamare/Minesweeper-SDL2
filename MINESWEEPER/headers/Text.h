@@ -3,15 +3,14 @@
 #include<SDL_ttf.h>
 class Text
 {
-private : 
-
-
-
 public :
-	TTF_Font* p_Font; 
+	TTF_Font* p_SmallFont = nullptr; 
+	TTF_Font* p_LargeFont = nullptr;
+	TTF_Font* p_MediumFont = nullptr; 
 	Text();
 	void ShowGameOverScreenText(SDL_Renderer* renderer);
 	void ShowGameWonText(SDL_Renderer* renderer);
 	void ShowYouWonText();
 	void Initializettf();
+	void ShowMainScreenText(SDL_Renderer* renderer);
 };
