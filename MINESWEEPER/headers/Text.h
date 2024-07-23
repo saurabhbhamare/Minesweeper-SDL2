@@ -9,8 +9,7 @@ public :
 	TTF_Font* p_MediumFont = nullptr; 
 	Text();
 	void ShowGameOverScreenText(SDL_Renderer* renderer);
-	void ShowGameWonText(SDL_Renderer* renderer);
-	void ShowYouWonText();
+    void ShowGameWonText(SDL_Renderer* renderer);
 	void Initializettf();
 	void ShowMainScreenText(SDL_Renderer* renderer);
 };

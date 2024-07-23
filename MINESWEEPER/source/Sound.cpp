@@ -18,7 +18,7 @@ Sound::Sound()
 		std::cout << "tile sound not imported" << std::endl;
 	}
 	if (!p_InsertFlagSound)
-	{
+	{ 
 		std::cout << "tile sound not imported" << std::endl;
 	}
 }

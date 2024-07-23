@@ -3,7 +3,9 @@
 #include<SDL_image.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Render.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Constants.h>
+#include</Plus/MINESWEEPER/MINESWEEPER/headers/Tile.h>
 #include<SDL_ttf.h>
+//Tile tile;
 
 Render::Render()
 	:flags(FLAGS), m_RenderLoop(true), p_Window(m_Window)
@@ -12,6 +14,7 @@ Render::Render()
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 	m_CurrentState = ScreenState :: MAIN;
 	p_Renderer = SDL_CreateRenderer(p_Window, -1, SDL_RENDERER_ACCELERATED);
+	//std::cout << "Num of Non Mine tiles is :" << NUM_OF_NON_MINE_TILES;
 //	m_ScreenState = ScreenState::PLAYING;
 	//p_Sound = new Sound();
 	ImportTextures();
@@ -150,6 +153,10 @@ void Render::TilesFloodFill(int i, int j)
 				}
 			}
 		}
+		if (!Tile::m_TileMatrix[i][j].m_Mine)
+		{
+			numOfOpenedTiles++;
+		}
 	}
 }
 
@@ -175,7 +182,10 @@ void Render::FreeTextures()
 }
 void Render::RenderGameWinningState()
 {
-
+	SDL_SetRenderDrawColor(p_Renderer, 100, 100, 100, 100);
+	SDL_RenderClear(p_Renderer);
+	text.ShowGameWonText(p_Renderer);
+	SDL_RenderPresent(p_Renderer);
 }
 void Render::RenderGameOverScreenState()
 {
@@ -195,15 +205,17 @@ void Render::RenderGamePlayingState()
 {
 	while (m_CurrentState == ScreenState::PLAYING )    // previour condition was m_RenderLoop
 	{
-		SDL_PollEvent(&m_Event);    // window event
 
+		SDL_PollEvent(&m_Event);    // window event
 		SDL_RenderClear(p_Renderer);
+		//std::cout << "NUMBER OF OPENED TILES IS : " << numOfOpenedTiles << std::endl;
+         Render::WinCondition();
 		for (int i = 0; i < TILE_ROWS; ++i)
 		{
 			for (int j = 0; j < TILE_ROWS; ++j)
 			{
 				RenderTiles(Tile::m_TileMatrix[i][j]);
-				RenderTileNumberTextures(Tile::m_TileMatrix[i][j]);
+				RenderTileNumberTextures(Tile::m_TileMatrix[i][j]);	
 			}
 		}
 		SDL_RenderPresent(p_Renderer);
@@ -260,6 +272,10 @@ void Render::RenderGameMainScreenState()
 		{
 			m_CurrentState = ScreenState::PLAYING; 
 		}
+		else if (m_Event.key.keysym.sym == SDLK_q)
+		{
+			m_RenderLoop = false;
+		}
 
 	}
 	SDL_SetRenderDrawColor(p_Renderer, 40, 40, 40, 100);
@@ -267,6 +283,31 @@ void Render::RenderGameMainScreenState()
 	text.ShowMainScreenText(p_Renderer);
 	SDL_RenderPresent(p_Renderer);
 }
+void Render::WinCondition()
+{
+	if (numOfOpenedTiles == NUM_OF_NON_MINE_TILES)
+	{
+		m_CurrentState = ScreenState::WIN;
+	}
+}
+
+//bool Render::WinCondition()
+//{
+//	/*for (int i = 0; i < TILE_ROWS; i++)
+//	{
+//		for (int j = 0; j < TILE_ROWS; j++)
+//		{
+//			m_TileMatrix[i][j].i = i;
+//			m_TileMatrix[i][j].j = j;
+//			m_TileMatrix[i][j].m_Revealed = false;
+//			m_TileMatrix[i][j].m_Mine = false;
+//			m_TileMatrix[i][j].m_AdjacentMines = -1;
+//			m_TileMatrix[i][j].m_Flagged = false;
+//		}
+//	}*/
+//	/*if()*/
+//	return true;
+//}
 
 //written in renderloop instead of while loop and switch statement 
 

@@ -8,8 +8,10 @@ Tile Tile::m_TileMatrix[TILE_ROWS][TILE_COLS];
 Tile::Tile()
 {
 	InitializeTileMatrix();
+	//std::cout << "num of opened tiles"<<numOfOpenedTiles << std::endl;
 	PlaceMinesInTileMatrix();
 	PlaceAdjacentMineNumbersInTileMatrix();
+	ShowMinePresentNumbers();
 }
 void Tile::InitializeTileMatrix()
 {
@@ -38,6 +40,7 @@ void Tile::PlaceMinesInTileMatrix()
 		if (!m_TileMatrix[i][j].m_Mine)
 		{
 			m_TileMatrix[i][j].m_Mine = true;
+			
 			numOfMines--;
 		}
 	}
@@ -107,5 +110,20 @@ void Tile::PlaceAdjacentMineNumbersInTileMatrix()
 			}
 		}
 	}
+}
+void Tile::ShowMinePresentNumbers()
+{
+	bool minePrinted[TILE_ROWS][TILE_ROWS] = { false };
+		for (int i = 0; i < TILE_ROWS; i++)
+		{
+			for (int j = 0; j < TILE_ROWS; j++)
+			{
+				if (m_TileMatrix[i][j].m_Mine && !minePrinted[i][j])
+				{
+					std::cout << "Mine Present at (" << i << ", " << j << ")" << std::endl;
+					minePrinted[i][j] = true; // Mark this mine as printed
+				}
+			}
+		}
 }
 

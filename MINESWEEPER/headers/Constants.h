@@ -29,6 +29,8 @@ const int TILE_ROWS = 12;
 const int TILE_COLS = 12;
 const int TILE_WIDTH = SCREEN_WIDTH / TILE_COLS;
 const int TILE_HEIGHT = SCREEN_HEIGHT / TILE_ROWS;
+const int NUM_OF_NON_MINE_TILES = TILE_COLS * TILE_ROWS - MAXMINES;
+
 
 
 

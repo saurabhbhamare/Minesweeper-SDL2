@@ -23,6 +23,10 @@ private:
 	ScreenState m_CurrentState;
 	Text text;
 	int flags;
+	int numOfTotalNonMineTiles = (TILE_COLS * TILE_HEIGHT) + (MAXMINES);
+	int numOfOpenedTiles;
+//	int numOfOpenedTiles = 0;
+	//int numOfRevealedNonMineTiles = 
 
 public: 
 	Render();
@@ -33,11 +37,11 @@ private:
 	void RenderTiles(Tile tile);
 	void RenderTileNumberTextures(Tile tile);
 	void ImportTextures();
-	//void TakeInputCoordinates();
 	void TilesFloodFill(int i, int j); 
 	void RevealTiles();
 	void RenderGameOverScreenState();
 	void FreeTextures();
+	void WinCondition();
 	//void RenderGameStates();
 	//void SwitchRenderState(ScreenState newState);
 	void RenderGamePlayingState();
