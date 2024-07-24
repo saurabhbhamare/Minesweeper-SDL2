@@ -25,8 +25,6 @@ private:
 	int flags;
 	int numOfTotalNonMineTiles = (TILE_COLS * TILE_HEIGHT) + (MAXMINES);
 	int numOfOpenedTiles;
-//	int numOfOpenedTiles = 0;
-	//int numOfRevealedNonMineTiles = 
 
 public: 
 	Render();
@@ -42,8 +40,6 @@ private:
 	void RenderGameOverScreenState();
 	void FreeTextures();
 	void WinCondition();
-	//void RenderGameStates();
-	//void SwitchRenderState(ScreenState newState);
 	void RenderGamePlayingState();
 	void RenderGameWinningState();
 	void RenderGameMainScreenState();

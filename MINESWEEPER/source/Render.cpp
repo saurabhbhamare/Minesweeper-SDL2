@@ -5,7 +5,6 @@
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Constants.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Tile.h>
 #include<SDL_ttf.h>
-//Tile tile;
 
 Render::Render()
 	:flags(FLAGS), m_RenderLoop(true), p_Window(m_Window)
@@ -14,15 +13,8 @@ Render::Render()
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 	m_CurrentState = ScreenState :: MAIN;
 	p_Renderer = SDL_CreateRenderer(p_Window, -1, SDL_RENDERER_ACCELERATED);
-	//std::cout << "Num of Non Mine tiles is :" << NUM_OF_NON_MINE_TILES;
-//	m_ScreenState = ScreenState::PLAYING;
-	//p_Sound = new Sound();
 	ImportTextures();
-	
 	RenderLoop(m_Window);
-
-	// Adding Screenstate code
-	 
 }
 Render::~Render()
 {
@@ -34,8 +26,6 @@ void Render::RenderLoop(SDL_Window* window)
 	
 	while (m_RenderLoop)
 	{
-	//	m_CurrentState = PLAYING;
-
 		switch (m_CurrentState)
 		{
 		case MAIN: 
@@ -189,7 +179,7 @@ void Render::RenderGameWinningState()
 }
 void Render::RenderGameOverScreenState()
 {
-	SDL_SetRenderDrawColor(p_Renderer, 40, 40, 40, 100);
+	SDL_SetRenderDrawColor(p_Renderer, 0, 0, 0, 128);
     SDL_RenderClear(p_Renderer);
 	text.ShowGameOverScreenText(p_Renderer);
 
@@ -197,18 +187,13 @@ void Render::RenderGameOverScreenState()
     SDL_RenderPresent(p_Renderer);
 }
 
-//void Render::RenderGameStates()
-//{
-//	m_ScreenState = ScreenState::MAIN;
-//}
 void Render::RenderGamePlayingState()
 {
-	while (m_CurrentState == ScreenState::PLAYING )    // previour condition was m_RenderLoop
+	while (m_CurrentState == ScreenState::PLAYING )    // previous condition was m_RenderLoop
 	{
 
 		SDL_PollEvent(&m_Event);    // window event
 		SDL_RenderClear(p_Renderer);
-		//std::cout << "NUMBER OF OPENED TILES IS : " << numOfOpenedTiles << std::endl;
          Render::WinCondition();
 		for (int i = 0; i < TILE_ROWS; ++i)
 		{
@@ -234,8 +219,6 @@ void Render::RenderGamePlayingState()
 					SDL_GetMouseState(&x, &y);
 					int i = x / TILE_WIDTH;
 					int j = y / TILE_HEIGHT;
-				//	if (!Tile::m_TileMatrix[i][j].m_Revealed)	p_Sound->PlayTileRevealSound();
-					// if (!Tile::m_TileMatrix[i][j].m_Mine) sound->PlayExplosionSound();
 					if (Tile::TileIndexValid(i, j) && !Tile::m_TileMatrix[i][j].m_Flagged)
 					{
 						TilesFloodFill(i, j);
@@ -250,9 +233,7 @@ void Render::RenderGamePlayingState()
 
 					if (Tile::TileIndexValid(i, j))
 					{   
-						
 						Tile::InsertFlag(i, j, flags);
-					//	p_Sound->PlayInsertFlagSound();
 					}
 				}
 			}
@@ -290,77 +271,3 @@ void Render::WinCondition()
 		m_CurrentState = ScreenState::WIN;
 	}
 }
-
-//bool Render::WinCondition()
-//{
-//	/*for (int i = 0; i < TILE_ROWS; i++)
-//	{
-//		for (int j = 0; j < TILE_ROWS; j++)
-//		{
-//			m_TileMatrix[i][j].i = i;
-//			m_TileMatrix[i][j].j = j;
-//			m_TileMatrix[i][j].m_Revealed = false;
-//			m_TileMatrix[i][j].m_Mine = false;
-//			m_TileMatrix[i][j].m_AdjacentMines = -1;
-//			m_TileMatrix[i][j].m_Flagged = false;
-//		}
-//	}*/
-//	/*if()*/
-//	return true;
-//}
-
-//written in renderloop instead of while loop and switch statement 
-
-
-//while (m_RenderLoop )
-	//{
-	//	SDL_PollEvent(&m_Event);    // window event
-
-	//	SDL_RenderClear(p_Renderer);
-	//	for (int i = 0; i < TILE_ROWS; ++i)
-	//	{
-	//		for (int j = 0; j < TILE_ROWS; ++j)
-	//		{
-	//			RenderTiles(Tile::m_TileMatrix[i][j]);
-	//			RenderTileNumberTextures(Tile::m_TileMatrix[i][j]);
-	//		}
-	//	}
-	//	SDL_RenderPresent(p_Renderer);
-
-	//	if (m_Event.type == SDL_QUIT)
-	//	{
-	//		m_RenderLoop = false;
-	//	}
-	//	if (m_Event.type == SDL_MOUSEBUTTONDOWN)
-	//	{
-	//		if (m_Event.type == SDL_MOUSEBUTTONDOWN)
-	//		{
-	//			if (m_Event.button.button == SDL_BUTTON_LEFT)
-	//			{
-	//				int x, y;
-	//				SDL_GetMouseState(&x, &y);
-	//				int i = x / TILE_WIDTH;
-	//				int j = y / TILE_HEIGHT;
-	//				if (!Tile::m_TileMatrix[i][j].m_Revealed)	p_Sound->PlayTileRevealSound();
-	//				// if (!Tile::m_TileMatrix[i][j].m_Mine) sound->PlayExplosionSound();
-	//				if (Tile::TileIndexValid(i, j) && !Tile::m_TileMatrix[i][j].m_Flagged)
-	//				{
-	//					TilesFloodFill(i, j);
-	//				}
-	//			}
-	//			else if (m_Event.button.button == SDL_BUTTON_RIGHT)
-	//			{
-	//				int x, y;
-	//				SDL_GetMouseState(&x, &y);
-	//				int i = x / TILE_WIDTH;
-	//				int j = y / TILE_HEIGHT;
-
-	//				if (Tile::TileIndexValid(i, j))
-	//				{
-	//					Tile::InsertFlag(i, j, flags);
-	//					p_Sound->PlayInsertFlagSound();
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
