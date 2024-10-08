@@ -22,8 +22,7 @@ Render::~Render()
 	std::cout << "free textures" << std::endl;
 }
 void Render::RenderLoop(SDL_Window* window)
-{
-	
+{	
 	while (m_RenderLoop)
 	{
 		switch (m_CurrentState)

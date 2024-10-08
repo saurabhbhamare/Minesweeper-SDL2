@@ -4,7 +4,7 @@
 int main(int argc, char* argv[])
 {
 	Render render;
-	 return 0;
+	return 0;
 }
 
 

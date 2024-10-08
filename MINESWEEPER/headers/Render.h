@@ -7,7 +7,7 @@
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Constants.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Sound.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Text.h>
-class Tile;
+//class Tile;
 
 class Render
 {
@@ -32,15 +32,15 @@ public:
 	void RenderLoop(SDL_Window*);
 
 private: 
+	void ImportTextures();
 	void RenderTiles(Tile tile);
 	void RenderTileNumberTextures(Tile tile);
-	void ImportTextures();
-	void TilesFloodFill(int i, int j); 
+	void RenderGameMainScreenState();
 	void RevealTiles();
-	void RenderGameOverScreenState();
-	void FreeTextures();
-	void WinCondition();
+	void TilesFloodFill(int i, int j); 
 	void RenderGamePlayingState();
 	void RenderGameWinningState();
-	void RenderGameMainScreenState();
+	void RenderGameOverScreenState();
+	void WinCondition();
+	void FreeTextures();
 };

@@ -17,14 +17,15 @@ public:
 	static bool TileIndexValid(int, int);
 	static void InsertFlag(int i, int j, int& flags);
 	static int TileNearMineCount(int i, int j);
+
 private:
 	Sound* p_Sound;
 public:
 	Tile();
 
 private:
-	void TileInsertAdjacentNumbers();
 	void InitializeTileMatrix();
 	void PlaceMinesInTileMatrix();
+	void TileInsertAdjacentNumbers();
 	void PlaceAdjacentMineNumbersInTileMatrix();
 };
