@@ -11,7 +11,7 @@ private:
 	int m_WindowPositionY;
 	int m_WindowWidth;
 	int m_WindowHeight;
-	SDL_Event m_Event;
+//	SDL_Event m_Event;
 
 public:
 	void InitializeSDL();

@@ -61,6 +61,7 @@ void Render::RenderTiles(Tile tile)
 	{
 		if (tile.m_Mine)
 		{
+			Sound::GetInstance().PlayExplosionSound();
 			m_CurrentState = ScreenState::LOSE;
 			texture = p_TextureArray[TextureName::TEXTURE_MINE];
 		}
@@ -117,10 +118,12 @@ void Render::RenderTileNumberTextures(Tile tile)
 void Render::TilesFloodFill(int i, int j)
 {
 	// Check if the index is valid and the tile is not revealed
-	if (Tile::TileIndexValid(i, j) && !Tile::m_TileMatrix[i][j].m_Revealed)
+	if (Tile::TileIndexValid(i, j) && !Tile::m_TileMatrix[i][j].m_Revealed && !Tile::m_TileMatrix[i][j].m_Flagged)
 	{
 		//Reveal the tile
+		Sound::GetInstance().PlayTileRevealSound();
 		Tile::m_TileMatrix[i][j].m_Revealed = true;
+	
 
 		// Check the number of adjacent mines
 		int count = Tile::m_TileMatrix[i][j].m_AdjacentMines;
@@ -133,7 +136,7 @@ void Render::TilesFloodFill(int i, int j)
 				for (int j1 = -1; j1 <= 1; j1++)
 				{
 					// Skip the current tile
-					if (i1 == 0 && j1 == 0)
+					if ((i1 == 0 && j1 == 0))  // updated
 					{
 						continue;
 					}
@@ -178,6 +181,12 @@ void Render::RenderGameWinningState()
 }
 void Render::RenderGameOverScreenState()
 {
+	SDL_PollEvent(&m_Event);
+		if (m_Event.type == SDL_QUIT)
+		{
+			m_RenderLoop = false;
+			//QuitEverything();
+     	}
 	SDL_SetRenderDrawColor(p_Renderer, 0, 0, 0, 128);
     SDL_RenderClear(p_Renderer);
 	text.ShowGameOverScreenText(p_Renderer);
@@ -188,10 +197,17 @@ void Render::RenderGameOverScreenState()
 
 void Render::RenderGamePlayingState()
 {
-	while (m_CurrentState == ScreenState::PLAYING )    // previous condition was m_RenderLoop
+	while (m_CurrentState == ScreenState::PLAYING && m_RenderLoop )    // previous condition was m_RenderLoop
 	{
+	//	std::cout << "Currently in playing state" << std::endl;
 
-		SDL_PollEvent(&m_Event);    // window event
+	    SDL_PollEvent(&m_Event);    // window event
+		if (m_Event.type == SDL_QUIT)
+		{
+			std::cout << "Quit event triggered" << std::endl;
+			m_RenderLoop = false;
+			//QuitEverything();
+		}
 		SDL_RenderClear(p_Renderer);
          Render::WinCondition();
 		for (int i = 0; i < TILE_ROWS; ++i)
@@ -203,11 +219,6 @@ void Render::RenderGamePlayingState()
 			}
 		}
 		SDL_RenderPresent(p_Renderer);
-
-		if (m_Event.type == SDL_QUIT)
-		{
-			m_RenderLoop = false;
-		}
 		if (m_Event.type == SDL_MOUSEBUTTONDOWN)
 		{
 			if (m_Event.type == SDL_MOUSEBUTTONDOWN)
@@ -245,6 +256,7 @@ void Render::RenderGameMainScreenState()
 	if (m_Event.type == SDL_QUIT)
 	{
 		m_RenderLoop = false; 
+		//QuitEverything();
 	}
 	if (m_Event.type == SDL_KEYDOWN)
 	{
@@ -255,6 +267,7 @@ void Render::RenderGameMainScreenState()
 		else if (m_Event.key.keysym.sym == SDLK_q)
 		{
 			m_RenderLoop = false;
+			//QuitEverything();
 		}
 
 	}
@@ -269,4 +282,15 @@ void Render::WinCondition()
 	{
 		m_CurrentState = ScreenState::WIN;
 	}
+}
+void Render::QuitEverything()
+{
+	
+	FreeTextures();
+	SDL_DestroyRenderer(p_Renderer);
+	SDL_DestroyWindow(m_Window);
+	IMG_Quit();
+	TTF_Quit();
+	Mix_Quit();
+	SDL_Quit();
 }

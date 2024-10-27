@@ -12,6 +12,7 @@ Sound::Sound()
 	}
 	p_TileRevealSound = Mix_LoadWAV("C:/Plus/MINESWEEPER/Sounds/mixkit-Reveal.wav");
 	p_InsertFlagSound = Mix_LoadWAV("C:/Plus/MINESWEEPER/Sounds/mixkit-Flag.wav");
+	p_ExplosionSound = Mix_LoadWAV("C:/Plus/MINESWEEPER/Sounds/mixkit-Explosion.wav");
 
 	if (!p_TileRevealSound)
 	{

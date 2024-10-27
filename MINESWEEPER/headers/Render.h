@@ -42,5 +42,8 @@ private:
 	void RenderGameWinningState();
 	void RenderGameOverScreenState();
 	void WinCondition();
+	void QuitEverything();
+	
+	
 	void FreeTextures();
 };
