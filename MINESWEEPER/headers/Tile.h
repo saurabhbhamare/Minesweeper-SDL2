@@ -22,10 +22,11 @@ private:
 	Sound* p_Sound;
 public:
 	Tile();
+	~Tile();
 
 private:
 	void InitializeTileMatrix();
 	void PlaceMinesInTileMatrix();
-	void TileInsertAdjacentNumbers();
+	//void TileInsertAdjacentNumbers();
 	void PlaceAdjacentMineNumbersInTileMatrix();
 };

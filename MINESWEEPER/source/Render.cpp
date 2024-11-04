@@ -19,6 +19,7 @@ Render::Render()
 Render::~Render()
 {
 	FreeTextures();
+	SDL_DestroyRenderer(p_Renderer);
 	std::cout << "free textures" << std::endl;
 }
 void Render::RenderLoop(SDL_Window* window)
@@ -32,8 +33,6 @@ void Render::RenderLoop(SDL_Window* window)
 
 		case PLAYING:
 			RenderGamePlayingState();
-			break;
-		case PAUSE:
 			break;
 		case WIN:
 			RenderGameWinningState();
@@ -174,7 +173,7 @@ void Render::FreeTextures()
 }
 void Render::RenderGameWinningState()
 {
-	SDL_SetRenderDrawColor(p_Renderer, 100, 100, 100, 100);
+	SDL_SetRenderDrawColor(p_Renderer, 40, 40, 40, 100);
 	SDL_RenderClear(p_Renderer);
 	text.ShowGameWonText(p_Renderer);
 	SDL_RenderPresent(p_Renderer);
@@ -187,7 +186,7 @@ void Render::RenderGameOverScreenState()
 			m_RenderLoop = false;
 			//QuitEverything();
      	}
-	SDL_SetRenderDrawColor(p_Renderer, 0, 0, 0, 128);
+	SDL_SetRenderDrawColor(p_Renderer, 40, 40, 40, 100);
     SDL_RenderClear(p_Renderer);
 	text.ShowGameOverScreenText(p_Renderer);
 

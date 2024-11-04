@@ -7,7 +7,6 @@
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Constants.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Sound.h>
 #include</Plus/MINESWEEPER/MINESWEEPER/headers/Text.h>
-//class Tile;
 
 class Render
 {

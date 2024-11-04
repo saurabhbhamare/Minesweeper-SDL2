@@ -109,3 +109,7 @@ void Tile::PlaceAdjacentMineNumbersInTileMatrix()
 		}
 	}
 }
+ Tile::~Tile()
+{
+	 delete p_Sound;
+}
